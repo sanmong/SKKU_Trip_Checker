@@ -74,7 +74,7 @@ const getCongestions = (place_list) =>{
 }
 
 //사용자가 조회한 장소의 시간대별 혼잡도를 제공합니다.
-//target_date는 30일 이내 만 가능
+//target_date는 30일 이내 만 가능합니다.
 const getTimelyCongestion = (poi_Id, target_date) =>{
   const options = {
     method: 'GET',
