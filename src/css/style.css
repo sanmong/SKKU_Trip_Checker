@@ -60,7 +60,8 @@ header {
             }
 
     #main-tab1,
-    #main-tab2 {
+    #main-tab2,
+    #detail-tab {
         width: 100%;
         height: 500px;
 
@@ -79,6 +80,9 @@ header {
 
         animation: main-fade-in 1.5s ease-in-out;
         }
+        #detail-tab{
+          height: 200px;
+        }
 
         .tab-content{
             display: none;
@@ -93,6 +97,7 @@ header {
             margin-bottom: 30px;
             color: white;
         }
+
 
     /* Search */
     #search-box {
@@ -232,6 +237,45 @@ header {
                 padding-right: 20px;
             }
         /* /////////// TODO: Card /////////// */
+
+/* detail */
+.description{
+  display: flex;
+  flex-direction: column;
+
+}
+  .desc-title{
+    padding: 1rem 2rem;
+
+  }
+
+
+  .desc-card{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 0px 2rem;
+
+  }
+    .detail-image{
+      flex: 1;
+      height: 300px;
+    }
+      .detail-image img{
+        height: 300px;
+        width: 100%;
+
+      }
+    .place-desc{
+      flex: 2;
+      padding: 2rem;
+
+    }
+      .info-wrapper{
+        margin-bottom: 2rem;
+      }
+
+
 
 /* Footer */
 footer {
