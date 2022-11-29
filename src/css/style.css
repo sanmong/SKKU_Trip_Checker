@@ -60,7 +60,8 @@ header {
             }
 
     #main-tab1,
-    #main-tab2 {
+    #main-tab2,
+    #detail-tab {
         width: 100%;
         height: 500px;
 
@@ -79,6 +80,9 @@ header {
 
         animation: main-fade-in 1.5s ease-in-out;
         }
+        #detail-tab{
+          height: 200px;
+        }
 
         .tab-content{
             display: none;
@@ -93,6 +97,7 @@ header {
             margin-bottom: 30px;
             color: white;
         }
+
 
     /* Search */
     #search-box {
