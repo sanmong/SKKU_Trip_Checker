@@ -1,4 +1,5 @@
 const API_KEY = config.apikey;
+const PROXY_URL = config.proxy;
 const popularPlaces = [
     {
         "poiId": "5799875",
@@ -36,7 +37,7 @@ const getLocations = () =>{
         headers: {accept: 'application/json', appkey: API_KEY}
       };
 
-    fetch('https://apis.openapi.sk.com/puzzle/pois', options)
+    fetch(`${PROXY_URL}https://apis.openapi.sk.com/puzzle/pois`, options)
         .then(response => response.json())
         .then(response => {return response})
         .catch(err => console.error(err));
@@ -48,7 +49,7 @@ const getCongestion = (poi_Id) =>{
         headers: {accept: 'application/json', appkey: API_KEY}
     };
 
-    fetch(`https://apis.openapi.sk.com/puzzle/congestion/rltm/pois/${poi_Id}`, options)
+    fetch(`${PROXY_URL}https://apis.openapi.sk.com/puzzle/congestion/rltm/pois/${poi_Id}`, options)
         .then(response => response.json())
         .then(response => {return response})
         .catch(err => console.error(err));
@@ -60,11 +61,11 @@ const getCongestions = (place_list) =>{
         headers: {accept: 'application/json', appkey: API_KEY}
     };
 
-    result_list = []
+    let result_list = []
 
     place_list.forEach(place => {
-      poi_Id = place.poiId
-      fetch(`https://apis.openapi.sk.com/puzzle/congestion/rltm/pois/${poi_Id}`, options)
+      let poi_Id = place.poiId
+      fetch(`${PROXY_URL}https://apis.openapi.sk.com/puzzle/congestion/rltm/pois/${poi_Id}`, options)
         .then(response => response.json())
         .then(response => result_list.push(response))
         .catch(err => console.error(err));
@@ -81,7 +82,7 @@ const getTimelyCongestion = (poi_Id, target_date) =>{
     headers: {accept: 'application/json', appkey: API_KEY}
   };
 
-  fetch(`https://apis.openapi.sk.com/puzzle/congestion/raw/hourly/pois/${poi_Id}?date=${target_date}`, options)
+  fetch(`${PROXY_URL}https://apis.openapi.sk.com/puzzle/congestion/raw/hourly/pois/${poi_Id}?date=${target_date}`, options)
     .then(response => response.json())
     .then(response => {return response})
     .catch(err => console.error(err));
@@ -94,7 +95,7 @@ const getCongestionStat = (poi_Id) =>{
     headers: {accept: 'application/json', appkey: API_KEY}
   };
 
-  fetch(`https://apis.openapi.sk.com/puzzle/congestion/stat/hourly/pois/${poi_Id}`, options)
+  fetch(`${PROXY_URL}https://apis.openapi.sk.com/puzzle/congestion/stat/hourly/pois/${poi_Id}`, options)
     .then(response => response.json())
     .then(response => {return response})
     .catch(err => console.error(err));
