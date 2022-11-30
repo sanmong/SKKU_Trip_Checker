@@ -22,7 +22,6 @@ const getCongestions = async (placeList) => {
       const data = await response.json();
       congestionList.push(data)
     } else {
-      console.log(response.status);
       throw new Error("Failed to fetch at `getCongestions`");
     }
   }

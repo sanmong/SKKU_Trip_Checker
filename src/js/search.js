@@ -32,10 +32,6 @@ const searchPlace = (state, county, name) => {
     place | x | x | o | x | o | o
   */
 
-  console.log(state);
-  console.log(county);
-  console.log(name);
-
   // Invalid
   if(state === 'null' && county === 'null' && name === "") { alert("검색할 장소 정보를 입력해주세요."); return []; }
   if(state !== 'null' && county === 'null' && name === "") { alert("구/군 정보를 선택해주세요."); return []; }
