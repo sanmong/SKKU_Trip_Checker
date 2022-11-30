@@ -64,6 +64,14 @@ const getCongestionStat = async (poi_Id) => {
   }
 }
 
+const setPlaceInfo = async (poiId) => {
+  placeResult = placeList.filter(place => place.poiId === poiId);
+  //console.log(placeResult[0].name);
+
+  document.getElementById("place-title").innerText = placeResult[0].name;
+  document.getElementById("place-addr").innerText = placeResult[0].address;
+}
+
 //실시간 혼잡도 게이지바 설정
 const setRealtimeGauge = async (poiId) =>{
   const realtimeCongestion = await getCongestion(poiId);
@@ -124,7 +132,8 @@ window.onload = () => {
   const poiId = urlParams.get('poiId');
   console.log(poiId);
 
-  setPlaceImage(poiId)
+  setPlaceInfo(poiId);
+  setPlaceImage(poiId);
 
   setRealtimeGauge(poiId);
   setTimelyGauge(poiId);
