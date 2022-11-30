@@ -82,6 +82,7 @@ header {
         }
         #detail-tab{
           height: 200px;
+          margin-bottom: 60px;
         }
 
         .tab-content{
