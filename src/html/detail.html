@@ -37,30 +37,30 @@
         <!-- place detail -->
         <div class="description">
           <div class="desc-title">
-            <h1 class="place-title">장소 이름</h1>
-            <h4 class="place-addr">장소 주소</h4>
+            <h1 id="place-title">장소 이름</h1>
+            <h4 id="place-addr">장소 주소</h4>
           </div>
           <div class="desc-card">
             <div class="detail-image">
-              <img src="../assets/thumb_1.jpg" alt="detail-image">
+              <img id="place-image" src="../assets/thumb_1.jpg" alt="detail-image">
             </div>
             <div class="place-desc">
               <div class="info-wrapper">
                 <h4>실시간 혼잡도</h4>
                 <div class="progress">
-                  <div class="progress-bar" role="progressbar" aria-label="Example with label" style="width: 50%;" aria-valuenow="5" aria-valuemin="0" aria-valuemax="10">5</div>
+                  <div id="realtime-gauge" class="progress-bar" role="progressbar" aria-label="Example with label" style="width: 50%;" aria-valuenow="5" aria-valuemin="0" aria-valuemax="10">5</div>
                 </div>
               </div>
               <div class="info-wrapper">
                 <h4>어제 기준 혼잡도</h4>
                 <div class="progress">
-                  <div class="progress-bar" role="progressbar" aria-label="Example with label" style="width: 50%;" aria-valuenow="5" aria-valuemin="0" aria-valuemax="10">5</div>
+                  <div id="timely-gauge" class="progress-bar" role="progressbar" aria-label="Example with label" style="width: 50%;" aria-valuenow="5" aria-valuemin="0" aria-valuemax="10">5</div>
                 </div>
               </div>
               <div class="info-wrapper">
                 <h4>30일간 혼잡도 통계</h4>
                 <div class="progress">
-                  <div class="progress-bar" role="progressbar" aria-label="Example with label" style="width: 50%;" aria-valuenow="5" aria-valuemin="0" aria-valuemax="10">5</div>
+                  <div id="stat-gauge" class="progress-bar" role="progressbar" aria-label="Example with label" style="width: 50%;" aria-valuenow="5" aria-valuemin="0" aria-valuemax="10">5</div>
                 </div>
               </div>
             </div>
@@ -72,8 +72,8 @@
     </div>
 
     <!-- Javascript-->
-    <script src="js/secret.js" type="text/javascript"></script>
-    <script src="js/page_load.js" type="text/javascript"></script>
-    <script src="js/search.js" type="text/javascript"></script>
+    <script src="../js/secret.js" type="text/javascript"></script>
+    <script src="../js/data.js" type="text/javascript"></script>
+    <script src="../js/detail_load.js" type="text/javascript"></script>
   </body>
 </html>
