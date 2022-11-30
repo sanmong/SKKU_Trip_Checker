@@ -246,8 +246,10 @@ header {
 }
   .desc-title{
     padding: 1rem 2rem;
-
   }
+    .desc-title #place-addr{
+      padding-left: 2px;
+    }
 
 
   .desc-card{
@@ -274,6 +276,21 @@ header {
       .info-wrapper{
         margin-bottom: 2rem;
       }
+  .nav-buttons{
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    padding: 1rem 2rem;
+  }
+    .nav-buttons button{
+      border: none;
+      background-color: rgb(204, 139, 235);
+      font:bolder 20px/1.5em Arial, Helvetica, sans-serif;
+      border-radius: 5px;
+      font-size: 20px;
+      padding: 5px 10px;
+
+    }
 
 
 
