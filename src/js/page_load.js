@@ -1,5 +1,6 @@
 const API_KEY = config.apikey;
 const PROXY_URL = config.proxy;
+
 const popularPlaces = [
     {
         "poiId": "5799875",
@@ -31,72 +32,113 @@ const popularPlaces = [
     },
 ]
 
-const getLocations = () =>{
-    const options = {
-        method: 'GET',
-        headers: {accept: 'application/json', appkey: API_KEY}
-      };
-
-    fetch(`${PROXY_URL}https://apis.openapi.sk.com/puzzle/pois`, options)
-        .then(response => response.json())
-        .then(response => {return response})
-        .catch(err => console.error(err));
-}
-
-const getCongestion = (poi_Id) =>{
-    const options = {
-        method: 'GET',
-        headers: {accept: 'application/json', appkey: API_KEY}
+const getLocations = async () => {
+  const options = {
+      method: 'GET',
+      headers: {accept: 'application/json', appkey: API_KEY}
     };
 
-    fetch(`${PROXY_URL}https://apis.openapi.sk.com/puzzle/congestion/rltm/pois/${poi_Id}`, options)
-        .then(response => response.json())
-        .then(response => {return response})
-        .catch(err => console.error(err));
+  const response = await fetch(`${PROXY_URL}https://apis.openapi.sk.com/puzzle/pois`, options);
+  if(response.status.code === '00') {
+    const data = await response.json();
+    return data;
+  } else {
+    throw new Error("Failed to fetch at `getLocations`");
+  }
 }
 
-const getCongestions = (place_list) =>{
-    const options = {
-        method: 'GET',
-        headers: {accept: 'application/json', appkey: API_KEY}
-    };
+const getCongestion = async (poi_Id) => {
+  const options = {
+    method: 'GET',
+    headers: {accept: 'application/json', appkey: API_KEY}
+  };
 
-    let result_list = []
+  const response = await fetch(`${PROXY_URL}https://apis.openapi.sk.com/puzzle/congestion/rltm/pois/${poi_Id}`, options);
+  if(response.status === 200) {
+    const data = await response.json();
+    return data;
+  } else {
+    throw new Error("Failed to fetch at `getCongestion`");
+  }
+}
 
-    place_list.forEach(place => {
-      let poi_Id = place.poiId
-      fetch(`${PROXY_URL}https://apis.openapi.sk.com/puzzle/congestion/rltm/pois/${poi_Id}`, options)
-        .then(response => response.json())
-        .then(response => result_list.push(response))
-        .catch(err => console.error(err));
-    });
+const getCongestions = async (placeList) => {
+  const options = {
+      method: 'GET',
+      headers: {accept: 'application/json', appkey: API_KEY}
+  };
 
-    return result_list
+  let congestionList = [];
+  for (const place of placeList) {
+    let poi_Id = place.poiId;
+    const response = await fetch(`${PROXY_URL}https://apis.openapi.sk.com/puzzle/congestion/rltm/pois/${poi_Id}`, options);
+    if(response.status === 200) {
+      const data = await response.json();
+      congestionList.push(data)
+    } else {
+      console.log(response.status);
+      throw new Error("Failed to fetch at `getCongestions`");
+    }
+  }
+
+  return congestionList;
 }
 
 //사용자가 조회한 장소의 시간대별 혼잡도를 제공합니다.
 //target_date는 30일이내만 가능합니다.
-const getTimelyCongestion = (poi_Id, target_date) =>{
+const getTimelyCongestion = async (poi_Id, target_date) =>{
   const options = {
     method: 'GET',
     headers: {accept: 'application/json', appkey: API_KEY}
   };
 
-  fetch(`${PROXY_URL}https://apis.openapi.sk.com/puzzle/congestion/raw/hourly/pois/${poi_Id}?date=${target_date}`, options)
-    .then(response => response.json())
-    .then(response => {return response})
-    .catch(err => console.error(err));
+  const response = await fetch(`${PROXY_URL}https://apis.openapi.sk.com/puzzle/congestion/raw/hourly/pois/${poi_Id}?date=${target_date}`, options);
+  if(response.status == 200) {
+    const data = await response.json();
+    return data;
+  } else {
+    throw new Error("Failed to fetch at `getTimelyCongestion`");
+  };
 }
 
 //공휴일과 휴무일을 제외한 최근 30일 해당 장소의 평균 혼잡도입니다.
-const getCongestionStat = (poi_Id) =>{
+const getCongestionStat = async (poi_Id) =>{
   const options = {
     method: 'GET',
     headers: {accept: 'application/json', appkey: API_KEY}
   };
 
-  fetch(`${PROXY_URL}https://apis.openapi.sk.com/puzzle/congestion/stat/hourly/pois/${poi_Id}`, options)
-    .then(response => response.json())
-    .then(response => {return response})
-    .catch(err => console.error(err));
+  const response = await fetch(`${PROXY_URL}https://apis.openapi.sk.com/puzzle/congestion/stat/hourly/pois/${poi_Id}`, options);
+  if(response.status == 200) {
+    const data = await response.json();
+    return data;
+  } else {
+    throw new Error("Failed to fetch at `getCongestionStat`");
+  }
 }
+
+//Popular place에 대한 혼잡도 업데이트가 1시간 이상 경과되었는지 확인합니다.
+const checkOutOfDate = (lastUpdated) => {
+  let currentTime = new Date().getTime();
+  let lastUpdatedTime = new Date(lastUpdated).getTime();
+
+  const intervalHour = Math.floor((currentTime - lastUpdatedTime) / 1000 / 60 / 60);
+  return (intervalHour >= 2);
+}
+
+//메인 페이지에 표시되는 장소들의 실시간 혼잡도를 불러와 로컬 스토리지에 저장합니다.
+const getPopularPlaceCongestions = async () =>{
+  // 이미 불러온 것이 있는지 확인
+  const lastUpdated = localStorage.getItem("lastUpdatedAt");
+  if (!lastUpdated || checkOutOfDate(lastUpdated)) {
+    let congestions = await getCongestions(popularPlaces);
+    localStorage.setItem("congestionPopular", JSON.stringify(congestions));
+    localStorage.setItem("lastUpdatedAt", new Date());
+    console.log("Newly updated!")
+  }
+
+  const congestions = JSON.parse(localStorage.getItem("congestionPopular"));
+  return await congestions;
+}
+
+getPopularPlaceCongestions().then(console.log);
