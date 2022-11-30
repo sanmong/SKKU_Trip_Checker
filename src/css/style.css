@@ -280,7 +280,7 @@ header {
     display: flex;
     flex-direction: row;
     justify-content: end;
-    padding: 1rem 2rem;
+    padding: 1rem 4rem;
   }
     .nav-buttons button{
       border: none;
