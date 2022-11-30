@@ -12,10 +12,9 @@ Please open the `src/index.html`
 Please make your own `secret.js` in `src/js`
 ```javascript
 // secret.js
-const config = {
-  apikey: "[YOUR API KEY]",
-  proxy: "[YOUR PROXY SERVER]",
-};
+const API_KEY = "[YOUR API KEY]";
+const PROXY_URL = "[YOUR PROXY SERVER URL]";
+
 ```
 
 ## Contributor
