@@ -44,9 +44,7 @@ const getPopularPlaceCongestions = async () => {
 }
 
 //TODO
-const exhibitCards = (exhibitList) => {
-
-}
+//const exhibitCards = (exhibitList) => {}
 
 // Main page loading
 window.onload = () => {
@@ -89,7 +87,52 @@ window.onload = () => {
     if(searchResults.length !== 0)
       getCongestions(searchResults).then(data => {
         exhibitList = data
-        console.log(exhibitList); // 지워야 함
+        var date = new Date();
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        var day = date.getDate();
+        var stringDate = year + "년 " + month + "월 " + day + "일 ";
+        var html='';
+        var table = document.getElementById("card-list");
+        table.remove;
+        for (var i = 0; i < exhibitList.length; i++)  {
+          html += '<tr>';
+          html += '<td class="card">';
+          html += '<div class="place-item">';
+          html +=  '<div class="place-img">'
+          html +=    '<a href="html/detail.html?poiId='+ exhibitList[i].contents.poiId + '">';
+          html +=      '<img class="place-image"src="assets/thumb_1.jpg"style="float: left; width: 300px; height: 300px; border-radius: 10px; margin-right: 50px;">';
+          html +=    '</a>';
+          html +=  '</div>';
+          html +=  '<div class="info">';
+          html +=    '<div class="title">';
+          html +=    '<a href="html/detail.html?poiId='+ exhibitList[i].contents.poiId + '">';
+          html +=        '<strong>';
+          html +=        exhibitList[i].contents.poiName;
+          html +=        '</strong>';
+          html +=      '</a>';
+          html +=    '</div>';
+          html +=    '<div class="address">';
+          html +=      '<small>';
+          html +=     exhibitList[i].contents.poiId;
+          html +=      '</small>';
+          html +=    '</div>';
+          html +=  '</div>';
+          html +=  '<div class="date-congestion">';
+          html +=    stringDate;
+          html +=    ' 혼잡도는 ';
+          html +=    exhibitList[i].contents.rltm.congestion*100;
+          html +=    '%입니다.';
+          html +=  '</div>';
+          html +=  '<div class="more-information">';
+          html +=    '<a href="html/detail.html?poiId='+ exhibitList[i].contents.poiId + '">';
+          html +=    '상세 정보 보기</a>';
+          html +=     '</div>';
+          html +=   '</div>';
+          html +=  '</td>';
+          html +=  '</tr>';
+        }
+        table.innerHTML = html;
       });
   });
 };
