@@ -45,6 +45,7 @@ const getPopularPlaceCongestions = async () => {
 
 //TODO
 //const exhibitCards = (exhibitList) => {}
+//searchBtn 에 연결하였습니다.
 
 // Main page loading
 window.onload = () => {
@@ -91,10 +92,10 @@ window.onload = () => {
         var year = date.getFullYear();
         var month = date.getMonth() + 1;
         var day = date.getDate();
-        var stringDate = year + "년 " + month + "월 " + day + "일 ";
+        var stringDate = year + "년 " + month + "월 " + day + "일 ";//현재 날짜 및 string으로 변환
         var html='';
         var table = document.getElementById("card-list");
-        table.remove;
+        table.remove;//기존에 있던 테이블 삭제
         for (var i = 0; i < exhibitList.length; i++)  {
           html += '<tr>';
           html += '<td class="card">';
@@ -132,7 +133,7 @@ window.onload = () => {
           html +=  '</td>';
           html +=  '</tr>';
         }
-        table.innerHTML = html;
+        table.innerHTML = html;//테이블에 추가
       });
   });
 };
