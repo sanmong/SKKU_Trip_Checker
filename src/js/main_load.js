@@ -43,24 +43,45 @@ const getPopularPlaceCongestions = async () => {
   return await congestions;
 }
 
-//TODO
-// const exhibitCards = (exhibitList) => {
-//   var date = new Date();
-//   var year = date.getFullYear();
-//   var month = date.getMonth() + 1;
-//   var day = date.getDate();
-//   var stringDate = year + "년 " + month + "월 " + day + "일 ";//현재 날짜 및 string으로 변환
-//   var html='';
-//   var divCard = document.getElementById("card-list");
-//   divCard.remove;//기존에 있던 테이블 삭제
 
-//   for (var i = 0; i < exhibitList.length; i++) {
-//     const ithCard = exhibitList[i];
-//     document.getElementById("card-list").innerHTML =ithCard.contents.poiName;
-//     document.getElementById("card-list").innerHTML =ithCard.contents.poiId;
-//     document.getElementById("card-list").innerHTML =ithCard.contents.poiAddress;
+const exhibitCards = (exhibitList) => {
+  var date = new Date();
+  var year = date.getFullYear();
+  var month = date.getMonth() + 1;
+  var day = date.getDate();
+  var stringDate = year + "년 " + month + "월 " + day + "일 ";//현재 날짜 및 string으로 변환
 
-// }
+  var newDiv = document.createElement("div");
+  var newA = document.createElement("a");
+  var divlistCard = document.querySelector(".card-list");
+  var divCard = divlistCard.querySelector(".card");
+  var divPlaceItem = divCard.querySelector(".place-item");
+  var divPlaceImg = divPlaceItem.querySelector(".place-img");
+  var divCardInfo = divPlaceItem.querySelector(".info");
+  var divCongestion = divCardItem.querySelector(".date-congestion");
+  var divMoreInfo = divCardItem.querySelector(".more-infomation");
+  var divTitle = divCardInfo.querySelector(".title");
+  var divAddress = divCardInfo.querySelector(".address");
+
+
+  divCard.remove;//기존에 있던 테이블 삭제
+
+  for (var i = 0; i < exhibitList.length; i++) {
+    let ithCard = exhibitList[i];
+    cardlist.append(newDiv.className = "card");
+    divCard.append(newDiv.className = "place-item");
+    divPlaceItem.append(newDiv.className = "place-img", newDiv.className = "info", newDiv.className = "date-congestion", newDiv.className = "more-information");
+    divPlaceInfo.append(newDiv.className = "title",newDiv.className = "address");
+        
+    divPlaceImg.innerHTML = '<img src="' + '"assets/thumb_1.jpg"' + 'style="float: left; width: 300px; height: 300px; border-radius: 10px; margin-right: 50px;"/>';
+
+    divTitle.innerHTML = ithCard.contents.poiName.style.fontWeight = "bold";
+    divAddress.innerHTML = ithCard.contents.poiId.style.fontWeight = "small";
+
+    divCongestion.innerHTML = stringDate + "혼잡도는 " + ithCard.contnets.congestion*100 + "% 입니다."
+    
+    divMoreInfo.innerHTML = '<a href="html/detail.html?poiId=' + ithCard.contents.poiId + '">상세 정보 보기</a>';
+}}
 //searchBtn 에 연결하였습니다.
 
 // Main page loading
