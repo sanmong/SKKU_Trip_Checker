@@ -82,8 +82,49 @@ const getPopularPlaceCongestions = async () => {
 
 //TODO
 const exhibitCards = (exhibitList) => {
+<<<<<<< Updated upstream
 
 }
+=======
+  var date = new Date();
+  var year = date.getFullYear();
+  var month = date.getMonth() + 1;
+  var day = date.getDate();
+  var stringDate = year + "년 " + month + "월 " + day + "일 ";//현재 날짜 및 string으로 변환
+
+  var newDiv = document.createElement("div");
+  var newA = document.createElement("a");
+  var divListCard = newDiv.querySelector(".card-list");
+  var divCard = divListCard.querySelector(".card");
+  var divPlaceItem = divCard.querySelector(".place-item");
+  var divPlaceImg = divPlaceItem.querySelector(".place-img");
+  var divCardInfo = divPlaceItem.querySelector(".info");
+  var divCongestion = divCardItem.querySelector(".date-congestion");
+  var divMoreInfo = divCardItem.querySelector(".more-infomation");
+  var divTitle = divCardInfo.querySelector(".title");
+  var divAddress = divCardInfo.querySelector(".address");
+
+
+  divCard.remove;//기존에 있던 테이블 삭제
+
+  for (var i = 0; i < exhibitList.length; i++) {
+    let ithCard = exhibitList[i];
+    divListCard.append(newDiv.className = "card");
+    divCard.append(newDiv.className = "place-item");
+    divPlaceItem.append(newDiv.className = "place-img", newDiv.className = "info", newDiv.className = "date-congestion", newDiv.className = "more-information");
+    divPlaceInfo.append(newDiv.className = "title",newDiv.className = "address");
+
+    divPlaceImg.innerHTML = '<img src="' + '"assets/thumb_1.jpg"' + 'style="float: left; width: 300px; height: 300px; border-radius: 10px; margin-right: 50px;"/>';
+
+    divTitle.innerHTML = ithCard.contents.poiName.style.fontWeight = "bold";
+    divAddress.innerHTML = ithCard.contents.poiId.style.fontWeight = "small";
+
+    divCongestion.innerHTML = stringDate + "혼잡도는 " + ithCard.contnets.congestion*100 + "% 입니다."
+
+    divMoreInfo.innerHTML = '<a href="html/detail.html?poiId=' + ithCard.contents.poiId + '">상세 정보 보기</a>';
+}}
+//searchBtn 에 연결하였습니다.
+>>>>>>> Stashed changes
 
 // Main page loading
 window.onload = () => {
@@ -128,6 +169,7 @@ window.onload = () => {
       countySelector.value,
       placeInput.value
     );
+<<<<<<< Updated upstream
     if(searchResults.length !== 0) {
       if(selectedDate.getDate() === new Date().getDate()) {
         getCongestions(searchResults).then(data => {
@@ -141,5 +183,61 @@ window.onload = () => {
         });
       }
     }
+=======
+    if(searchResults.length !== 0)
+      getCongestions(searchResults).then(data => {
+        exhibitList = data;
+        exhibitCards(exhibitList);
+        // var date = new Date();
+        // var year = date.getFullYear();
+        // var month = date.getMonth() + 1;
+        // var day = date.getDate();
+        // var stringDate = year + "년 " + month + "월 " + day + "일 ";//현재 날짜 및 string으로 변환
+        // var html='';
+        // var table = document.getElementById("card-list");
+        // table.remove;//기존에 있던 테이블 삭제
+        // console.log(exhibitList);
+        // for (var i = 0; i < exhibitList.length; i++)  {
+        //   html += '<div class="card">';
+        //   html += '<div class="place-item">';
+        //   html +=  '<div class="place-img">'
+        //   html +=    '<a href="html/detail.html?poiId='+ exhibitList[i].contents.poiId + '">';
+        //   html +=      '<img class="place-image"src="assets/thumb_1.jpg"style="float: left; width: 300px; height: 300px; border-radius: 10px; margin-right: 50px;">';
+        //   html +=    '</a>';
+        //   html +=  '</div>';
+        //   html +=  '<div class="info">';
+        //   html +=    '<div class="title">';
+        //   html +=    '<a href="html/detail.html?poiId='+ exhibitList[i].contents.poiId + '">';
+        //   html +=        '<strong>';
+        //   html +=        exhibitList[i].contents.poiName;
+        //   html +=        '</strong>';
+        //   html +=      '</a>';
+        //   html +=    '</div>';
+        //   html +=    '<div class="progress">'
+        //   html +=      '<div class="progress-bar" role="progressbar" style="width: 80%;" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100">';
+        //   html +=      '</div>';
+        //   html +=    '</div>'
+        //   html +=    '<div class="address">';
+        //   html +=      '<small>';
+        //   html +=     exhibitList[i].contents.poiId;
+        //   html +=      '</small>';
+        //   html +=    '</div>';
+        //   html +=  '</div>';
+        //   html +=  '<div class="date-congestion">';
+        //   html +=    stringDate;
+        //   html +=    ' 혼잡도는 ';
+        //   html +=    exhibitList[i].contents.rltm.congestion*100;
+        //   html +=    '%입니다.';
+        //   html +=  '</div>';
+        //   html +=  '<div class="more-information">';
+        //   html +=    '<a href="html/detail.html?poiId='+ exhibitList[i].contents.poiId + '">';
+        //   html +=    '상세 정보 보기</a>';
+        //   html +=   '</div>';
+        //   html +=   '</div>';
+        //   html +=  '</div>';
+        // }
+        // divCard.innerHTML = html;//테이블에 추가
+      });
+>>>>>>> Stashed changes
   });
 };
