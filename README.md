@@ -1,16 +1,20 @@
-# SKKU Trip Checker
+# Trip Checker
 
-![Logo of SKKU Trip Checker](.github/logo.png)
+![Logo of Trip Checker](.github/logo.png)
 
 Real-time Congestion Checker for Popular Places
 
-![Snap shot of SKKU Trip Checker](.github/snapshot.png)
+![Snap shot ofTrip Checker](.github/snapshot.png)
 
 ## Introduction
 
 SKKU Trip Checker is a web-application that check congestion for some places provied by [SK Open API: 장소(POI) 통합 검색](https://skopenapi.readme.io/reference/%EC%9E%A5%EC%86%8C%ED%86%B5%ED%95%A9%EA%B2%80%EC%83%89) .  [SK Open API: 장소(POI) 통합 검색](https://skopenapi.readme.io/reference/%EC%9E%A5%EC%86%8C%ED%86%B5%ED%95%A9%EA%B2%80%EC%83%89) API has been used for this project.
 
-App can check REAL-TIME congestion for shopping places, tourist attractions, leisure sports spots!
+Most of us have been inconvenienced by high dense of people. You feel more uncomfortable when go on trip.
+To prevent this, here the Trip Checker comes!
+
+SKKU Trip Checker can check REAL-TIME congestion for trip places(e.g. shopping places, tourist attractions and leisure sports spots). When go on trip, you can check congestion of the place.
+Also, SKKU Trip Checker provides future congestion prediction by statistical data. You can plan your comportable trip by this app.
 
 ## Quick start
 
@@ -29,9 +33,29 @@ API_KEY can be obtained at [SK Open API](https://openapi.sk.com/mypage/project/)
 We used [Heroku](https://www.heroku.com) proxy server.
 
 ##  How to use
+![Main page of Trip Checker](.github/main.png)
+![Popular places](.github/popular.png)
+When SKKU Trip Checker opens, main page has search box and list of some popular default places.
+
+List of places provide information such as name of place, address, and congetion level with bar.
+
+![Search by address](.github/search_add.gif)
+![Search by name](.github/search_name.gif)
+Places can be searched by address and name.
+
+![Search by date](.github/search_date.gif)
+You can search by date to see future and past congestion level.
+
+![Click detail page](.github/click_detail.gif)
+You can see more information by click the button.
+
+![Detail page](.github/detail.png)
+Detail page provides real-time, yesterday,monthly congestion with bar.
+You can return to main page by click Home button
 
 ## Example
-
+![Total flow](.github/flow.gif)
+This is example of using app.
 ## Documentation
 
 ## Contributor
