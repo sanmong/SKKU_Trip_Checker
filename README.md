@@ -30,16 +30,19 @@ const PROXY_URL = "[YOUR PROXY SERVER URL]";
 
 ```
 API_KEY can be obtained at [SK Open API](https://openapi.sk.com/mypage/project/).
+
 We used [Heroku](https://www.heroku.com) proxy server.
 
 ##  How to use
 ![Main page of Trip Checker](.github/main.png)
+
 ![Popular places](.github/popular.png)
 When SKKU Trip Checker opens, main page has search box and list of some popular default places.
 
 List of places provide information such as name of place, address, and congetion level with bar.
 
 ![Search by address](.github/search_add.gif)
+
 ![Search by name](.github/search_name.gif)
 Places can be searched by address and name.
 
