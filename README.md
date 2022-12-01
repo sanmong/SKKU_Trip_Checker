@@ -1,6 +1,6 @@
 # Trip Checker
 
-<div align= center>![Logo of Trip Checker](.github/logo.png)<div>
+![Logo of Trip Checker](.github/logo.png)
 
 Real-time Congestion Checker for Popular Places
 
