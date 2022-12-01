@@ -66,7 +66,6 @@ const getCongestionStat = async (poi_Id) => {
 
 const setPlaceInfo = async (poiId) => {
   placeResult = placeList.filter(place => place.poiId === poiId);
-  //console.log(placeResult[0].name);
 
   document.getElementById("place-title").innerText = placeResult[0].name;
   document.getElementById("place-addr").innerText = placeResult[0].address;
@@ -75,11 +74,11 @@ const setPlaceInfo = async (poiId) => {
 //실시간 혼잡도 게이지바 설정
 const setRealtimeGauge = async (poiId) =>{
   const realtimeCongestion = await getCongestion(poiId);
-  console.log(realtimeCongestion)
 
   const element = document.getElementById("realtime-gauge");
   const congestion = realtimeCongestion['contents']['rltm']['congestionLevel'];
   element.style.width = `${congestion}0%`;
+  element.style.backgroundColor = `${progressLevelColor[congestion]}`
   element.ariaValueNow = `${congestion}`;
   element.innerText = `${congestion}`;
 }
@@ -91,11 +90,14 @@ const setTimelyGauge = async (poiId) =>{
   const currHour = today.getHours();//0~23
 
   const timelyCongestion = await getTimelyCongestion(poiId, "ystday");
-  console.log(timelyCongestion)
 
   const element = document.getElementById("timely-gauge");
-  const congestion = timelyCongestion['contents']['raw'][currHour]['congestionLevel'];
+  let congestion = timelyCongestion['contents']['raw'][currHour]['congestionLevel'];
+  if(!congestion){
+    congestion = 0
+  }
   element.style.width = `${congestion}0%`;
+  element.style.backgroundColor = `${progressLevelColor[congestion]}`
   element.ariaValueNow = `${congestion}`;
   element.innerText = `${congestion}`;
 }
@@ -107,14 +109,13 @@ const setStatGauge = async (poiId) =>{
   const currHour = today.getHours();//0~23
   let currDay = today.getDay();   //sunday ~ saturday : 0 ~ 6
   currDay = currDay - 1 > -1 ? currDay - 1 : 6; //monday ~ sunday : 0 ~ 6
-  console.log(`currHour = ${currHour} && currDay = ${currDay}`);
 
   const congestStat = await getCongestionStat(poiId);
-  console.log(congestStat)
 
   const element = document.getElementById("stat-gauge");
   const congestion = congestStat['contents']['stat'][currDay*24 + currHour]['congestionLevel'];
   element.style.width = `${congestion}0%`;
+  element.style.backgroundColor = `${progressLevelColor[congestion]}`
   element.ariaValueNow = `${congestion}`;
   element.innerText = `${congestion}`;
 
@@ -130,7 +131,6 @@ const setPlaceImage = async (poiId) => {
 window.onload = () => {
   const urlParams = new URL(location.href).searchParams;
   const poiId = urlParams.get('poiId');
-  console.log(poiId);
 
   setPlaceInfo(poiId);
   setPlaceImage(poiId);
@@ -138,8 +138,4 @@ window.onload = () => {
   setRealtimeGauge(poiId);
   setTimelyGauge(poiId);
   setStatGauge(poiId);
-
-
-
-
 }

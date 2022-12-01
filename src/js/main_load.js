@@ -8,14 +8,14 @@ const checkOutOfDate = (lastUpdated) => {
 }
 
 //placeList의 혼잡도를 제공합니다.
-const getCongestions = async (placeList) => {
+const getCongestions = async (targetPlaceList) => {
   const options = {
       method: 'GET',
       headers: {accept: 'application/json', appkey: API_KEY}
   };
 
   let congestionList = [];
-  for (const place of placeList) {
+  for (const place of targetPlaceList) {
     let poi_Id = place.poiId;
     const response = await fetch(`${PROXY_URL}https://apis.openapi.sk.com/puzzle/congestion/rltm/pois/${poi_Id}`, options);
     if(response.status === 200) {
@@ -24,7 +24,7 @@ const getCongestions = async (placeList) => {
         poiId: poi_Id,
         poiName: data.contents.poiName,
         congestion: data.contents.rltm.congestion,
-        address: popularPlaceList.filter(x => x.poiId === poi_Id).address
+        address: placeList.filter(x => x.poiId === poi_Id)[0].address
       };
       congestionList.push(data)
     } else {
@@ -35,7 +35,7 @@ const getCongestions = async (placeList) => {
 }
 
 //PlaceList의 targetDate 시점 예상 혼잡도를 제공합니다.
-const getDateCongestions = async (placeList, targetDate) => {
+const getDateCongestions = async (targetPlaceList, targetDate) => {
   const num2day = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
   const options = {
       method: 'GET',
@@ -43,19 +43,19 @@ const getDateCongestions = async (placeList, targetDate) => {
   };
 
   let congestionList = [];
-  for (const place of placeList) {
+  for (const place of targetPlaceList) {
     let poi_Id = place.poiId;
     const response = await fetch(`${PROXY_URL}https://apis.openapi.sk.com/puzzle/congestion/stat/hourly/pois/${poi_Id}`, options);
     if(response.status == 200) {
       let data = await response.json();
       let stat = data.contents.stat.filter(x => x.dow === num2day[targetDate.getDay()])
                                     .filter(x => ((parseInt(x.hh) >= 10) && (parseInt(x.hh) <= 20)))
-                                    .reduce((sum, x) => sum + x.congestion, 0.0);
+                                    .reduce((sum, x) => sum + x.congestion, 0.0) / 11;
       data = {
         poiId: poi_Id,
         poiName: data.contents.poiName,
         congestion: stat,
-        address: placeList.filter(x => x.poiId === poi_Id).address
+        address: placeList.filter(x => x.poiId === poi_Id)[0].address
       };
       congestionList.push(data);
     } else {
@@ -73,70 +73,74 @@ const getPopularPlaceCongestions = async () => {
     let congestions = await getCongestions(popularPlaceList);
     localStorage.setItem("congestionPopular", JSON.stringify(congestions));
     localStorage.setItem("lastUpdatedAt", new Date());
-    console.log("Newly updated!")
   }
 
   const congestions = JSON.parse(localStorage.getItem("congestionPopular"));
   return await congestions;
 }
 
-const exhibitCards = (exhibitList) => {
-  let date = new Date();
-  let year = date.getFullYear();
-  let month = date.getMonth() + 1;
-  let day = date.getDate();
-  let stringDate = year + "년 " + month + "월 " + day + "일 ";//현재 날짜 및 string으로 변환
-
-  var divCard = document.getElementById("card-list");
-  var html = '';
-  console.log(exhibitList);
-  for (var i = 0; i < exhibitList.length; i++) {
-    html += '<div class="card">';
-    html += '<div class="place-item">';
-    html +=  '<div class="place-img">'
-    html +=    '<a href="html/detail.html?poiId='+ exhibitList[i].poiId + '">';
-    html +=      '<img class="place-image"src="assets/places/'+ exhibitList[i].poiId + '.jpg"style="float: left; width: 300px; height: 300px; border-radius: 10px; margin-right: 50px;">';
-    html +=    '</a>';
-    html +=  '</div>';
-    html +=  '<div class="info">';
-    html +=    '<div class="title">';
-    html +=    '<a href="html/detail.html?poiId='+ exhibitList[i].poiId + '">';
-    html +=        '<strong>';
-    html +=        exhibitList[i].poiName;
-    html +=        '</strong>';
-    html +=      '</a>';
-    html +=    '</div>';
-    html +=    '<div class="progress">'
-    html +=      '<div id="realtime-gauge" class="progress-bar" role="progressbar" aria-label="Example with label" style="width: ';
-    html +=       exhibitList[i].congestion;
-    html +=      '%;" aria-valuenow="';
-    html +=       exhibitList[i].congestion*10;
-    html +=       '" aria-valuemin="0" aria-valuemax="10">';
-    html +=      '</div>';
-    html +=    '</div>'
-    html +=    '<div class="address">';
-    html +=      '<small>';
-    html +=     exhibitList[i].address;
-    html +=      '</small>';
-    html +=    '</div>';
-    html +=  '</div>';
-    html +=  '<div class="date-congestion">';
-    html +=    stringDate;
-    html +=    ' 혼잡도는 ';
-    html +=    exhibitList[i].congestion*100;
-    html +=    '%입니다.';
-    html +=  '</div>';
-    html +=  '<div class="more-information">';
-    html +=    '<a href="html/detail.html?poiId='+ exhibitList[i].poiId + '">';
-    html +=    '상세 정보 보기</a>';
-    html +=   '</div>';
-    html +=   '</div>';
-    html +=  '</div>';
+//카드 하나를 생성합니다.
+const renderSingleCard = (cardInfo, targetDate, isPresent) => {
+  const detailUrl = `html/detail.html?poiId=${cardInfo.poiId}`
+  const year = targetDate.getFullYear();
+  const month = targetDate.getMonth() + 1;
+  const day = targetDate.getDate();
+  const dateIndicator = `${year}년 ${month}월 ${day}일 ` + (isPresent ? "현재 혼잡도" : "예상 혼잡도");
+  const congestionPercent = Math.round(cardInfo.congestion * 10000) / 100;
+  const congestionLevel = Math.ceil(congestionPercent / 10);
+  if(!congestionPercent) {
+    congestionPercent = 0.0;
+    congestionLevel = 1;
   }
-  divCard.innerHTML = html;//테이블에 추가
-  divCard.remove;
+
+  return `
+  <div class="card">
+    <div class="place-item">
+      <div class="place-img">
+        <a href="${detailUrl}">
+          <img class="place-image" src="assets/places/${cardInfo.poiId}.jpg">
+        </a>
+      </div>
+      <div class="info">
+        <div class="title">
+          <a href="${detailUrl}">
+            <strong>${cardInfo.poiName}</strong>
+          </a>
+        </div>
+        <div class="progress">
+          <div class="progress-bar"
+              role="progressbar"
+              style="width: ${congestionLevel * 10}%; background-color: ${progressLevelColor[congestionLevel]}"
+              aria-valuenow="${congestionLevel}"
+              aria-valuemin="0"
+              aria-valuemax="10"
+          >${congestionLevel}</div>
+        </div>
+        <div class="address">
+          ${cardInfo.address}
+        </div>
+      </div>
+      <div class="date-congestion">
+         ${dateIndicator}는 <strong>${congestionPercent}</strong>%입니다.
+      </div>
+      <div class="more-information">
+        <a href="${detailUrl}">
+          상세 정보 보기
+        </a>
+      </div>
+    </div>
+  </div>
+  `;
 }
 
+//카드를 html에 렌더링합니다.
+const exhibitCards = (exhibitList, targetDate, isPresent) => {
+  let cardDiv = document.querySelector("#card-list");
+
+  cardDiv.innerHTML = "";
+  for(cardInfo of exhibitList)
+    cardDiv.innerHTML += renderSingleCard(cardInfo, targetDate, isPresent);
+}
 
 // Main page loading
 window.onload = () => {
@@ -153,7 +157,7 @@ window.onload = () => {
   // 메인 페이지 Popular place에 대한 혼잡도를 local storage에 저장 및 표시 대상으로 지정
   getPopularPlaceCongestions().then(data => {
     exhibitList = data;
-    exhibitCards(exhibitList);
+    exhibitCards(exhibitList, new Date(), true);
   });
 
   // 검색창 State 선택 시 County 업데이트
@@ -185,14 +189,12 @@ window.onload = () => {
       if(selectedDate.getDate() === new Date().getDate()) {
         getCongestions(searchResults).then(data => {
           exhibitList = data;
-          exhibitCards(exhibitList);
+          exhibitCards(exhibitList, newDate(), true);
           });
       } else {
         getDateCongestions(searchResults, selectedDate).then(data => {
           exhibitList = data
-          for (var i = 0; i < exhibitList.length; i++) {
-          exhibitCards(exhibitList);
-          }
+          exhibitCards(exhibitList, selectedDate, false);
         });
       }
     }
