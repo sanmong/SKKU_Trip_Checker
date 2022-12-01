@@ -7,7 +7,7 @@ const checkOutOfDate = (lastUpdated) => {
   return (intervalHour >= 2);
 }
 
-//PlaceList의 혼잡도를 제공합니다.
+//placeList의 혼잡도를 제공합니다.
 const getCongestions = async (placeList) => {
   const options = {
       method: 'GET',
@@ -19,10 +19,47 @@ const getCongestions = async (placeList) => {
     let poi_Id = place.poiId;
     const response = await fetch(`${PROXY_URL}https://apis.openapi.sk.com/puzzle/congestion/rltm/pois/${poi_Id}`, options);
     if(response.status === 200) {
-      const data = await response.json();
+      let data = await response.json();
+      data = {
+        poiId: poi_Id,
+        poiName: data.contents.poiName,
+        congestion: data.contents.rltm.congestion,
+        address: popularPlaceList.filter(x => x.poiId === poi_Id).address
+      };
       congestionList.push(data)
     } else {
       throw new Error("Failed to fetch at `getCongestions`");
+    }
+  }
+  return congestionList;
+}
+
+//PlaceList의 targetDate 시점 예상 혼잡도를 제공합니다.
+const getDateCongestions = async (placeList, targetDate) => {
+  const num2day = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+  const options = {
+      method: 'GET',
+      headers: {accept: 'application/json', appkey: API_KEY}
+  };
+
+  let congestionList = [];
+  for (const place of placeList) {
+    let poi_Id = place.poiId;
+    const response = await fetch(`${PROXY_URL}https://apis.openapi.sk.com/puzzle/congestion/stat/hourly/pois/${poi_Id}`, options);
+    if(response.status == 200) {
+      let data = await response.json();
+      let stat = data.contents.stat.filter(x => x.dow === num2day[targetDate.getDay()])
+                                    .filter(x => ((parseInt(x.hh) >= 10) && (parseInt(x.hh) <= 20)))
+                                    .reduce((sum, x) => sum + x.congestion, 0.0);
+      data = {
+        poiId: poi_Id,
+        poiName: data.contents.poiName,
+        congestion: stat,
+        address: placeList.filter(x => x.poiId === poi_Id).address
+      };
+      congestionList.push(data);
+    } else {
+      throw new Error("Failed to fetch at `getDateCongestions`");
     }
   }
   return congestionList;
@@ -51,18 +88,22 @@ const exhibitCards = (exhibitList) => {
 // Main page loading
 window.onload = () => {
   // 검색창 현재 날짜 설정
-  let visitDate = document.querySelector("#visit-date");
-  visitDate.value = visitDate.min = new Date().toISOString().split('T')[0];
-
-  // 메인 페이지 Popular place에 대한 혼잡도를 local storage에 저장 및 표시 대상으로 지정
   let exhibitList;
-  getPopularPlaceCongestions().then(data => exhibitList = data);
-
-  // 검색창 State 선택 시 County 업데이트
+  let visitDate = document.querySelector("#visit-date");
   let stateSelector = document.querySelector("#search-state");
   let countySelector = document.querySelector("#search-county");
   let placeInput = document.querySelector("#place-name");
 
+  visitDate.value = visitDate.min = new Date().toISOString().split('T')[0];
+  visitDate.max = new Date(new Date().setMonth(new Date().getMonth() + 1)).toISOString().split('T')[0];
+
+  // 메인 페이지 Popular place에 대한 혼잡도를 local storage에 저장 및 표시 대상으로 지정
+  getPopularPlaceCongestions().then(data => {
+    exhibitList = data;
+    exhibitCards(exhibitList);
+  });
+
+  // 검색창 State 선택 시 County 업데이트
   stateSelector.addEventListener("change", () => {
     let selected = stateSelector.value;
     let countyList = stateList[selected];
@@ -70,7 +111,7 @@ window.onload = () => {
     let defaultOption = new Option("::선택::", "null");
     defaultOption.hidden = true;
 
-    document.querySelectorAll('#search-county > option').forEach(option => option.remove());
+    document.querySelectorAll("#search-county > option").forEach(option => option.remove());
     countySelector.appendChild(defaultOption, undefined);
     countyList.forEach(county => {
       let newOption = new Option(county, county);
@@ -81,15 +122,24 @@ window.onload = () => {
   // Search 버튼 클릭 시 event
   let searchBtn = document.querySelector("#btn-search");
   searchBtn.addEventListener("click", () => {
+    const selectedDate = new Date(visitDate.value);
     let searchResults = searchPlace(
       stateSelector.value,
       countySelector.value,
       placeInput.value
     );
-    if(searchResults.length !== 0)
-      getCongestions(searchResults).then(data => {
-        exhibitList = data
-        console.log(exhibitList); // 지워야 함
-      });
+    if(searchResults.length !== 0) {
+      if(selectedDate.getDate() === new Date().getDate()) {
+        getCongestions(searchResults).then(data => {
+          exhibitList = data;
+          exhibitCards(exhibitList);
+        })
+      } else {
+        getDateCongestions(searchResults, selectedDate).then(data => {
+          exhibitList = data
+          exhibitCards(exhibitList);
+        });
+      }
+    }
   });
 };
