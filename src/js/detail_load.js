@@ -94,7 +94,10 @@ const setTimelyGauge = async (poiId) =>{
   console.log(timelyCongestion)
 
   const element = document.getElementById("timely-gauge");
-  const congestion = timelyCongestion['contents']['raw'][currHour]['congestionLevel'];
+  let congestion = timelyCongestion['contents']['raw'][currHour]['congestionLevel'];
+  if(!congestion){
+    congestion = 0
+  }
   element.style.width = `${congestion}0%`;
   element.ariaValueNow = `${congestion}`;
   element.innerText = `${congestion}`;
