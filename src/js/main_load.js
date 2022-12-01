@@ -86,8 +86,8 @@ const renderSingleCard = (cardInfo, targetDate, isPresent) => {
   const month = targetDate.getMonth() + 1;
   const day = targetDate.getDate();
   const dateIndicator = `${year}년 ${month}월 ${day}일 ` + (isPresent ? "현재 혼잡도" : "예상 혼잡도");
-  const congestionPercent = Math.round(cardInfo.congestion * 10000) / 100;
-  const congestionLevel = Math.ceil(congestionPercent / 10);
+  let congestionPercent = Math.round(cardInfo.congestion * 10000) / 100;
+  let congestionLevel = Math.ceil(congestionPercent / 10);
   if(!congestionPercent) {
     congestionPercent = 0.0;
     congestionLevel = 1;
