@@ -44,7 +44,24 @@ const getPopularPlaceCongestions = async () => {
 }
 
 //TODO
-//const exhibitCards = (exhibitList) => {}
+const exhibitCards = (exhibitList) => {
+  var date = new Date();
+  var year = date.getFullYear();
+  var month = date.getMonth() + 1;
+  var day = date.getDate();
+  var stringDate = year + "년 " + month + "월 " + day + "일 ";//현재 날짜 및 string으로 변환
+
+  var divCard = document.getElementById("card-list");
+  divCard.remove;
+
+  const name = exhibitList.contents.poiName;
+  const congestion = exhibitList.contents.congestion;
+  const congestionLevel = congestion.level;
+
+  var newCard = document.createElement("div");
+
+  divCard,appendChild();
+}
 //searchBtn 에 연결하였습니다.
 
 // Main page loading
@@ -94,11 +111,10 @@ window.onload = () => {
         var day = date.getDate();
         var stringDate = year + "년 " + month + "월 " + day + "일 ";//현재 날짜 및 string으로 변환
         var html='';
-        var table = document.getElementById("card-list");
-        table.remove;//기존에 있던 테이블 삭제
+        var divCard = document.getElementById("card-list");
+        divCard.remove;//기존에 있던 테이블 삭제
         for (var i = 0; i < exhibitList.length; i++)  {
-          html += '<tr>';
-          html += '<td class="card">';
+          html += '<div class="card">';
           html += '<div class="place-item">';
           html +=  '<div class="place-img">'
           html +=    '<a href="html/detail.html?poiId='+ exhibitList[i].contents.poiId + '">';
@@ -113,6 +129,10 @@ window.onload = () => {
           html +=        '</strong>';
           html +=      '</a>';
           html +=    '</div>';
+          html +=    '<div class="progress">'
+          html +=      '<div class="progress-bar" role="progressbar" style="width: 80%;" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100">';
+          html +=      '</div>';
+          html +=    '</div>'
           html +=    '<div class="address">';
           html +=      '<small>';
           html +=     exhibitList[i].contents.poiId;
@@ -128,12 +148,11 @@ window.onload = () => {
           html +=  '<div class="more-information">';
           html +=    '<a href="html/detail.html?poiId='+ exhibitList[i].contents.poiId + '">';
           html +=    '상세 정보 보기</a>';
-          html +=     '</div>';
           html +=   '</div>';
-          html +=  '</td>';
-          html +=  '</tr>';
+          html +=   '</div>';
+          html +=  '</div>';
         }
-        table.innerHTML = html;//테이블에 추가
+        divCard.innerHTML = html;//테이블에 추가
       });
   });
 };
