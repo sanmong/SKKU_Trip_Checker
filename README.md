@@ -59,6 +59,9 @@ You can return to main page by click Home button
 ## Example
 ![Total flow](.github/flow.gif)
 This is example of using app.
+
+Result
+![Example result](.github/example_result.png)
 ## Documentation
 
 ## Contributor
@@ -66,3 +69,7 @@ OSS Team 4, Fall 2022, SKKU
 
 ## License
 This repository follows the [MIT License](LICENSE)
+
+## Youtube link
+
+우수 프로젝트 시상 프로그램에 지원합니다.
