@@ -162,7 +162,11 @@ header {
             margin-top: 10px;
             background-color: var(--greeny-black);
             color: white;
-        } /* TODO: Hover */
+        }
+        #btn-search:hover {
+            background-color: black;
+            color: white;
+        }
 
     #divider {
         width: 90%;
@@ -202,6 +206,11 @@ header {
                     margin: 10px;
                     align-items: center;
                     justify-content: center;
+                    float: left;
+                    width: 300px;
+                    height: 300px;
+                    border-radius: 10px;
+                    margin-right: 50px;
                 }
                 .info{
                     padding-top: 40px;
@@ -227,17 +236,21 @@ header {
                 font:bolder 20px/1.5em Arial, Helvetica, sans-serif;
                 color: rgb(255, 255, 255);
                 text-decoration: none;
-                background-color: rgb(204, 139, 235);
+                background-color: #111236;
+                color: white;
                 margin-right: 20px;
                 border-radius: 5px;
-                top: 260px;
+                top: 240px;
                 right: 5px;
                 position: absolute;
-                padding: 7px;
-                padding-left: 20px;
-                padding-right: 20px;
+                padding: 15px 30px;
             }
-        /* /////////// TODO: Card /////////// */
+            .more-information > a {
+              color: white;
+            }
+            .more-information > a:hover {
+              color: #F2E7D5;
+            }
 
 /* detail */
 .description{
@@ -285,15 +298,16 @@ header {
   }
     .nav-buttons button{
       border: none;
-      background-color: rgb(204, 139, 235);
+      background-color: #111236;
+      color: white;
       font:bolder 20px/1.5em Arial, Helvetica, sans-serif;
       border-radius: 5px;
       font-size: 20px;
-      padding: 5px 10px;
-
+      padding: 15px 30px;
     }
-
-
+    .nav-buttons button:hover {
+      color: #F2E7D5;
+    }
 
 /* Footer */
 footer {
