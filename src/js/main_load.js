@@ -44,7 +44,23 @@ const getPopularPlaceCongestions = async () => {
 }
 
 //TODO
-//const exhibitCards = (exhibitList) => {}
+// const exhibitCards = (exhibitList) => {
+//   var date = new Date();
+//   var year = date.getFullYear();
+//   var month = date.getMonth() + 1;
+//   var day = date.getDate();
+//   var stringDate = year + "년 " + month + "월 " + day + "일 ";//현재 날짜 및 string으로 변환
+//   var html='';
+//   var divCard = document.getElementById("card-list");
+//   divCard.remove;//기존에 있던 테이블 삭제
+
+//   for (var i = 0; i < exhibitList.length; i++) {
+//     const ithCard = exhibitList[i];
+//     document.getElementById("card-list").innerHTML =ithCard.contents.poiName;
+//     document.getElementById("card-list").innerHTML =ithCard.contents.poiId;
+//     document.getElementById("card-list").innerHTML =ithCard.contents.poiAddress;
+
+// }
 //searchBtn 에 연결하였습니다.
 
 // Main page loading
@@ -96,9 +112,9 @@ window.onload = () => {
         var html='';
         var table = document.getElementById("card-list");
         table.remove;//기존에 있던 테이블 삭제
+        console.log(exhibitList);
         for (var i = 0; i < exhibitList.length; i++)  {
-          html += '<tr>';
-          html += '<td class="card">';
+          html += '<div class="card">';
           html += '<div class="place-item">';
           html +=  '<div class="place-img">'
           html +=    '<a href="html/detail.html?poiId='+ exhibitList[i].contents.poiId + '">';
@@ -130,10 +146,9 @@ window.onload = () => {
           html +=    '상세 정보 보기</a>';
           html +=     '</div>';
           html +=   '</div>';
-          html +=  '</td>';
-          html +=  '</tr>';
+          html +=  '</div>';
         }
         table.innerHTML = html;//테이블에 추가
       });
   });
-};
+}
