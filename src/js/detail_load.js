@@ -1,12 +1,12 @@
 //제공 가능한 장소 리스트를 불러옵니다.
 const getLocations = async () => {
   const options = {
-      method: 'GET',
-      headers: {accept: 'application/json', appkey: API_KEY}
-    };
+    method: 'GET',
+    headers: { accept: 'application/json', appkey: API_KEY }
+  };
 
   const response = await fetch(`${PROXY_URL}https://apis.openapi.sk.com/puzzle/pois`, options);
-  if(response.status.code === '00') {
+  if (response.status.code === '00') {
     const data = await response.json();
     return data;
   } else {
@@ -18,11 +18,11 @@ const getLocations = async () => {
 const getCongestion = async (poi_Id) => {
   const options = {
     method: 'GET',
-    headers: {accept: 'application/json', appkey: API_KEY}
+    headers: { accept: 'application/json', appkey: API_KEY }
   };
 
   const response = await fetch(`${PROXY_URL}https://apis.openapi.sk.com/puzzle/congestion/rltm/pois/${poi_Id}`, options);
-  if(response.status === 200) {
+  if (response.status === 200) {
     const data = await response.json();
     return data;
   } else {
@@ -36,11 +36,11 @@ const getCongestion = async (poi_Id) => {
 const getTimelyCongestion = async (poi_Id, target_date) => {
   const options = {
     method: 'GET',
-    headers: {accept: 'application/json', appkey: API_KEY}
+    headers: { accept: 'application/json', appkey: API_KEY }
   };
 
   const response = await fetch(`${PROXY_URL}https://apis.openapi.sk.com/puzzle/congestion/raw/hourly/pois/${poi_Id}?date=${target_date}`, options);
-  if(response.status == 200) {
+  if (response.status == 200) {
     const data = await response.json();
     return data;
   } else {
@@ -52,11 +52,11 @@ const getTimelyCongestion = async (poi_Id, target_date) => {
 const getCongestionStat = async (poi_Id) => {
   const options = {
     method: 'GET',
-    headers: {accept: 'application/json', appkey: API_KEY}
+    headers: { accept: 'application/json', appkey: API_KEY }
   };
 
   const response = await fetch(`${PROXY_URL}https://apis.openapi.sk.com/puzzle/congestion/stat/hourly/pois/${poi_Id}`, options);
-  if(response.status == 200) {
+  if (response.status == 200) {
     const data = await response.json();
     return data;
   } else {
@@ -72,7 +72,7 @@ const setPlaceInfo = async (poiId) => {
 }
 
 //실시간 혼잡도 게이지바 설정
-const setRealtimeGauge = async (poiId) =>{
+const setRealtimeGauge = async (poiId) => {
   const realtimeCongestion = await getCongestion(poiId);
 
   const element = document.getElementById("realtime-gauge");
@@ -85,7 +85,7 @@ const setRealtimeGauge = async (poiId) =>{
 
 //어제 기준 혼잡도 게이지바 설정
 //API 호출 시간 기준
-const setTimelyGauge = async (poiId) =>{
+const setTimelyGauge = async (poiId) => {
   const today = new Date();
   const currHour = today.getHours();//0~23
 
@@ -93,7 +93,7 @@ const setTimelyGauge = async (poiId) =>{
 
   const element = document.getElementById("timely-gauge");
   let congestion = timelyCongestion['contents']['raw'][currHour]['congestionLevel'];
-  if(!congestion){
+  if (!congestion) {
     congestion = 0
   }
   element.style.width = `${congestion}0%`;
@@ -104,7 +104,7 @@ const setTimelyGauge = async (poiId) =>{
 
 //통계성 혼잡도 게이지바 설정
 //이전 한달 기준 해당 요일 해당 시간의 평균 혼잡도
-const setStatGauge = async (poiId) =>{
+const setStatGauge = async (poiId) => {
   const today = new Date();
   const currHour = today.getHours();//0~23
   let currDay = today.getDay();   //sunday ~ saturday : 0 ~ 6
@@ -113,7 +113,7 @@ const setStatGauge = async (poiId) =>{
   const congestStat = await getCongestionStat(poiId);
 
   const element = document.getElementById("stat-gauge");
-  const congestion = congestStat['contents']['stat'][currDay*24 + currHour]['congestionLevel'];
+  const congestion = congestStat['contents']['stat'][currDay * 24 + currHour]['congestionLevel'];
   element.style.width = `${congestion}0%`;
   element.style.backgroundColor = `${progressLevelColor[congestion]}`
   element.ariaValueNow = `${congestion}`;
