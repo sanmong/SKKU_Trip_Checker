@@ -10,15 +10,15 @@ const checkOutOfDate = (lastUpdated) => {
 //placeList의 혼잡도를 제공합니다.
 const getCongestions = async (targetPlaceList) => {
   const options = {
-      method: 'GET',
-      headers: {accept: 'application/json', appkey: API_KEY}
+    method: 'GET',
+    headers: { accept: 'application/json', appkey: API_KEY }
   };
 
   let congestionList = [];
   for (const place of targetPlaceList) {
     let poi_Id = place.poiId;
     const response = await fetch(`${PROXY_URL}https://apis.openapi.sk.com/puzzle/congestion/rltm/pois/${poi_Id}`, options);
-    if(response.status === 200) {
+    if (response.status === 200) {
       let data = await response.json();
       data = {
         poiId: poi_Id,
@@ -38,19 +38,19 @@ const getCongestions = async (targetPlaceList) => {
 const getDateCongestions = async (targetPlaceList, targetDate) => {
   const num2day = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
   const options = {
-      method: 'GET',
-      headers: {accept: 'application/json', appkey: API_KEY}
+    method: 'GET',
+    headers: { accept: 'application/json', appkey: API_KEY }
   };
 
   let congestionList = [];
   for (const place of targetPlaceList) {
     let poi_Id = place.poiId;
     const response = await fetch(`${PROXY_URL}https://apis.openapi.sk.com/puzzle/congestion/stat/hourly/pois/${poi_Id}`, options);
-    if(response.status == 200) {
+    if (response.status == 200) {
       let data = await response.json();
       let stat = data.contents.stat.filter(x => x.dow === num2day[targetDate.getDay()])
-                                    .filter(x => ((parseInt(x.hh) >= 10) && (parseInt(x.hh) <= 20)))
-                                    .reduce((sum, x) => sum + x.congestion, 0.0) / 11;
+        .filter(x => ((parseInt(x.hh) >= 10) && (parseInt(x.hh) <= 20)))
+        .reduce((sum, x) => sum + x.congestion, 0.0) / 11;
       data = {
         poiId: poi_Id,
         poiName: data.contents.poiName,
@@ -88,7 +88,7 @@ const renderSingleCard = (cardInfo, targetDate, isPresent) => {
   const dateIndicator = `${year}년 ${month}월 ${day}일 ` + (isPresent ? "현재 혼잡도" : "예상 혼잡도");
   let congestionPercent = Math.round(cardInfo.congestion * 10000) / 100;
   let congestionLevel = Math.ceil(congestionPercent / 10);
-  if(!congestionPercent) {
+  if (!congestionPercent) {
     congestionPercent = 0.0;
     congestionLevel = 1;
   }
@@ -138,7 +138,7 @@ const exhibitCards = (exhibitList, targetDate, isPresent) => {
   let cardDiv = document.querySelector("#card-list");
 
   cardDiv.innerHTML = "";
-  for(cardInfo of exhibitList)
+  for (cardInfo of exhibitList)
     cardDiv.innerHTML += renderSingleCard(cardInfo, targetDate, isPresent);
 }
 
@@ -185,12 +185,12 @@ window.onload = () => {
       countySelector.value,
       placeInput.value
     );
-    if(searchResults.length !== 0) {
-      if(selectedDate.getDate() === new Date().getDate()) {
+    if (searchResults.length !== 0) {
+      if (selectedDate.getDate() === new Date().getDate()) {
         getCongestions(searchResults).then(data => {
           exhibitList = data;
           exhibitCards(exhibitList, new Date(), true);
-          });
+        });
       } else {
         getDateCongestions(searchResults, selectedDate).then(data => {
           exhibitList = data
