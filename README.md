@@ -73,5 +73,5 @@ OSS Team 4, Fall 2022, SKKU
 This repository follows the [MIT License](LICENSE)
 
 ## Youtube link
-
+https://youtu.be/24XClweTBfM
 우수 프로젝트 시상 프로그램에 지원합니다.
