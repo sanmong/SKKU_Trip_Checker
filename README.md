@@ -39,10 +39,14 @@ When SKKU Trip Checker opens, main page has search box and list of some popular 
 
 List of places provide information such as name of place, address, and congetion level with bar.
 
+
+
+
 ![Search by address](.github/img/search_add.gif)
+Places can be searched by address.
 
 ![Search by name](.github/img/search_name.gif)
-Places can be searched by address and name.
+And Name.
 
 ![Search by date](.github/img/search_date.gif)
 You can search by date to see future and past congestion level.
@@ -52,6 +56,7 @@ You can see more information by click the button.
 
 ![Detail page](.github/img/detail.png)
 Detail page provides real-time, yesterday,monthly congestion with bar.
+
 You can return to main page by click Home button
 
 ## Example
