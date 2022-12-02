@@ -189,7 +189,7 @@ window.onload = () => {
       if(selectedDate.getDate() === new Date().getDate()) {
         getCongestions(searchResults).then(data => {
           exhibitList = data;
-          exhibitCards(exhibitList, newDate(), true);
+          exhibitCards(exhibitList, new Date(), true);
           });
       } else {
         getDateCongestions(searchResults, selectedDate).then(data => {
