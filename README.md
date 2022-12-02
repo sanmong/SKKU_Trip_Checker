@@ -2,7 +2,7 @@
 
 <p align="center"><img src="github/img/logo.png"></p>
 
-[Thumnail](thumbnail.png)
+<p align="center"><img src="thumbnail.png"></p>
 Real-time Congestion Checker for Popular Places
 
 
