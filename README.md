@@ -1,10 +1,10 @@
 # Trip Checker
 
-<p align="center"><img src=".github/logo.png"></p>
+<p align="center"><img src="github/img/logo.png"></p>
 
+[Thumnail](thumbnail.png)
 Real-time Congestion Checker for Popular Places
 
-![Snap shot ofTrip Checker](.github/snapshot.png)
 
 ## Introduction
 
@@ -34,35 +34,34 @@ API_KEY can be obtained at [SK Open API](https://openapi.sk.com/mypage/project/)
 We used [Heroku](https://www.heroku.com) proxy server.
 
 ##  How to use
-![Main page of Trip Checker](.github/main.png)
+![Main page of Trip Checker](.github/img/main.png)
 
-![Popular places](.github/popular.png)
+![Popular places](.github/img/popular.png)
 When SKKU Trip Checker opens, main page has search box and list of some popular default places.
 
 List of places provide information such as name of place, address, and congetion level with bar.
 
-![Search by address](.github/search_add.gif)
+![Search by address](.github/img/search_add.gif)
 
-![Search by name](.github/search_name.gif)
+![Search by name](.github/img/search_name.gif)
 Places can be searched by address and name.
 
-![Search by date](.github/search_date.gif)
+![Search by date](.github/img/search_date.gif)
 You can search by date to see future and past congestion level.
 
-![Click detail page](.github/click_detail.gif)
+![Click detail page](.github/img/click_detail.gif)
 You can see more information by click the button.
 
-![Detail page](.github/detail.png)
+![Detail page](.github/img/detail.png)
 Detail page provides real-time, yesterday,monthly congestion with bar.
 You can return to main page by click Home button
 
 ## Example
-![Total flow](.github/flow.gif)
+![Total flow](.github/img/flow.gif)
 This is example of using app.
 
 Result
-![Example result](.github/example_result.png)
-## Documentation
+![Example result](.github/img/example_result.png)
 
 ## Contributor
 OSS Team 4, Fall 2022, SKKU
